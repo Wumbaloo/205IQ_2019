@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import sys
-from math import exp
+from math import exp, sqrt, pow, pi
 
 
 def printHelp():
@@ -12,6 +12,36 @@ def printHelp():
     print("\ts\tstandard deviation")
     print("\tIQ1\tminimum IQ")
     print("\tIQ2\tmaximum IQ")
+
+
+def compute_density(u, s, x):
+    result = (1 / (s * sqrt(2 * pi))) * exp(-(((x - u) ** 2) / (2 * s ** 2)))
+    return (result)
+
+
+def compute_density_in_range(u, s, min, max):
+    for x in range(min, (max + 1)):
+        print("{:d} {:.5f}".format(x, compute_density(u, s, x)))
+
+
+def find_iq_inferior(u, s, IQ_min):
+    total = 0.0
+    x = 0.0
+
+    while (x < IQ_min):
+        total += compute_density(u, s, x)
+        x += 0.01
+    return (total)
+
+
+def find_iq_between(u, s, IQ_min, IQ_max):
+    total = 0.0
+    x = IQ_min
+
+    while (x < IQ_max):
+        total += compute_density(u, s, x)
+        x += 0.01
+    return (total)
 
 
 u = 0
@@ -29,8 +59,8 @@ if (sys.argv[1] == "-h"):
     exit(0)
 
 try:
-    u = int(sys.argv[1])
-    s = int(sys.argv[2])
+    u = float(sys.argv[1])
+    s = float(sys.argv[2])
     if (arg_len > 3):
         IQ_min = int(sys.argv[3])
         if (IQ_min < 0 or IQ_min > 200):
@@ -51,8 +81,8 @@ except:
     exit(84)
 
 if (IQ_min == -1 and IQ_max == -1):
-    print("First step")
+    compute_density_in_range(u, s, 0, 200)
 elif (IQ_min != -1 and IQ_max == -1):
-    print("Second step")
+    print("{:.1f}% of people have an IQ inferior to {:.0f}".format(find_iq_inferior(u, s, IQ_min), IQ_min))
 elif (IQ_min != -1 and IQ_max != -1):
-    print("Third step")
+    print("{:.1f}% of people have an IQ between {:.0f} and {:.0f}".format(find_iq_between(u, s, IQ_min, IQ_max), IQ_min, IQ_max))
