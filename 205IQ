@@ -1,0 +1,58 @@
+#!/usr/bin/python3
+
+import sys
+from math import exp
+
+
+def printHelp():
+    print("USAGE")
+    print("\t./205ducks u s [IQ1] [IQ2]\n\n")
+    print("DESCRIPTION")
+    print("\tu\tmean")
+    print("\ts\tstandard deviation")
+    print("\tIQ1\tminimum IQ")
+    print("\tIQ2\tmaximum IQ")
+
+
+u = 0
+s = 0
+IQ_min = -1
+IQ_max = -1
+arg_len = len(sys.argv)
+
+if (arg_len < 2 or arg_len > 5):
+    printHelp()
+    exit(84)
+
+if (sys.argv[1] == "-h"):
+    printHelp()
+    exit(0)
+
+try:
+    u = int(sys.argv[1])
+    s = int(sys.argv[2])
+    if (arg_len > 3):
+        IQ_min = int(sys.argv[3])
+        if (IQ_min < 0 or IQ_min > 200):
+            print("IQ must be between 0 and 200.")
+            exit(84)
+    if (arg_len > 4):
+        IQ_max = int(sys.argv[4])
+        if (IQ_max < 0 or IQ_max > 200):
+            print("IQ must be between 0 and 200.")
+            exit(84)
+        if (IQ_min > IQ_max):
+            exit(84)
+except ValueError:
+    print("Error entry value please use ./205ducks u s [IQ1] [IQ2]")
+    exit(84)
+except:
+    printHelp()
+    exit(84)
+
+if (IQ_min == -1 and IQ_max == -1):
+    print("First step")
+elif (IQ_min != -1 and IQ_max == -1):
+    print("Second step")
+elif (IQ_min != -1 and IQ_max != -1):
+    print("Third step")
