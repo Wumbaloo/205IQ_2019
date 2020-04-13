@@ -73,6 +73,10 @@ try:
             exit(84)
         if (IQ_min > IQ_max):
             exit(84)
+    if (u < 0 or u > 200):
+        exit(84)
+    if (s <= 0 or s > 200):
+        exit(84)
 except ValueError:
     print("Error entry value please use ./205ducks u s [IQ1] [IQ2]")
     exit(84)
